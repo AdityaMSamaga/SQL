@@ -1,0 +1,26 @@
+SELECT * FROM ActivityMasterDetails WHERE MachineType='Engg Spl Order' AND ActivityType='Planned' AND IsDAPRequired=1
+
+ ;WITH cte AS (
+        SELECT 
+            ActivityId,
+            Activity,
+            PreceedingActivity,
+            DATEADD(DAY, IncrementDays, '2024-08-30 10:00:00') AS ActivityDate,
+            IncrementDays
+        FROM  ActivityMasterDetails WHERE MachineType='Engg Spl Order' AND ActivityType='Planned' AND IsDAPRequired=1 AND PreceedingActivity >=0
+        AND PreceedingActivity = 0
+        UNION ALL
+        SELECT 
+            A.ActivityId,
+            A.Activity,
+            A.PreceedingActivity,
+            DATEADD(DAY, A.IncrementDays, RAD.ActivityDate) AS ActivityDate,
+            A.IncrementDays
+        FROM  ActivityMasterDetails A 
+        JOIN cte RAD ON A.PreceedingActivity = RAD.ActivityId
+		WHERE MachineType='Engg Spl Order' AND ActivityType='Planned' AND IsDAPRequired=1 AND A.PreceedingActivity >=0
+    )
+    
+    SELECT ActivityId, Activity, ActivityDate
+    FROM cte
+    ORDER BY ActivityId;

@@ -1,0 +1,29 @@
+/*
+To Alter Structure of column Which is included in Primary Key.
+Here, Changing CharacteristicID from NVARCHAR(50) to NVARCHAR(250). But CharacteristicID is one Primary Key.
+1) Drop Primary Key
+2) Make Necessary changes to Column
+3) Add Primary Key
+*/
+
+
+DECLARE @ConstraintName1 NVARCHAR(MAX)='';
+
+SET @ConstraintName1 = (SELECT name FROM sys.key_constraints WHERE type = 'PK' AND OBJECT_NAME(parent_object_id) = 'SPC_Characteristic');
+
+IF ISNULL(@ConstraintName1,'')<>''
+BEGIN
+    EXEC('ALTER TABLE SPC_Characteristic DROP CONSTRAINT ' + @ConstraintName1);
+END
+
+IF EXISTS(SELECT * FROM sys.columns WHERE name=N'CharacteristicID' AND object_id=object_id(N'SPC_Characteristic'))
+BEGIN
+	ALTER TABLE SPC_Characteristic
+	ALTER COLUMN CharacteristicID NVARCHAR(250) NOT NULL
+END
+
+IF NOT EXISTS(SELECT name FROM sys.key_constraints WHERE type = 'PK' AND OBJECT_NAME(parent_object_id) = 'SPC_Characteristic')
+BEGIN
+	ALTER TABLE SPC_Characteristic
+	ADD CONSTRAINT PK_SPCCharacteristic PRIMARY KEY (MachineID,ComponentID,OperationNo,CharacteristicID);
+END

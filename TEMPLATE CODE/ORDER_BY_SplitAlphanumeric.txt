@@ -1,0 +1,22 @@
+
+ORDER BY CAST(dbo.SplitAlphanumeric(ColumnName,'^0-9') AS INT)
+
+
+Example:
+Suppose Column contains:
+Z1
+C1
+M1
+A2
+
+Normal Sorting:
+A2
+C1
+M1
+Z1
+
+Alphanumeric sorting:
+Z1
+C1
+M1
+A2

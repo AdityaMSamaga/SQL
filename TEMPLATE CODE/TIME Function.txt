@@ -1,0 +1,5 @@
+DECLARE @Seconds INT=125
+
+/* Converts Seconds to hh:mm:ss format */
+SELECT DBO.f_FormatTime(@Seconds,'hh:mm:ss')
+--00:02:05

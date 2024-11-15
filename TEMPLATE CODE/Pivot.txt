@@ -1,0 +1,34 @@
+DECLARE @columns NVARCHAR(MAX) = '',
+	@sql     NVARCHAR(MAX) = '';
+
+IF ((SELECT COUNT(*) FROM #Temp)<>0)
+BEGIN
+	SET @columns =''
+	SELECT @columns = @columns + QUOTENAME([Day]) + ',' FROM #Temp
+	GROUP BY [Day]
+	ORDER BY [Day]
+	SET @columns = LEFT(@columns, LEN(@columns) - 1);
+
+	SET @sql = ''
+	SET @sql ='
+	SELECT MachineID,CheckpointID,CheckpointItem,Requirement,Method,Instrument,Frequency,Department,DocNo,IssueDate,RevID,RevNo,RevDate,YearNo,
+	MonthNo, ' + @columns + ',ActionPlan,AMType FROM 
+	( 
+		SELECT DISTINCT MachineID,CheckpointID,CheckpointItem,Requirement,Method,Instrument,Frequency,Department,DocNo,IssueDate,RevID,RevNo,
+		RevDate,YearNo,MonthNo,[Day] AS Header,[Value] AS s1,ActionPlan,AMType 
+		FROM #Temp
+	) AS T
+	PIVOT
+	(
+		max(s1) FOR Header IN (' + @columns + ')
+	) AS pivot_table
+	ORDER BY MachineID,CheckpointID,RevID'
+
+	PRINT(@Sql)
+	EXECUTE sp_executesql @sql;
+END
+ELSE
+BEGIN
+	SELECT 'No records' AS SaveFlag
+	RETURN
+END

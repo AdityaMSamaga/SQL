@@ -1,0 +1,14 @@
+--If there is any Indexes which interrupts the process, take script of Index & Delete it
+
+--Updating Column to Non Null Value if any NULL present
+UPDATE SaleOrderDetails SET IDS='' WHERE IDS IS NULL
+
+--Altering Column to NOT NULL
+ALTER TABLE SaleOrderDetails
+ALTER COLUMN IDS NVARCHAR(100) NOT NULL
+
+--Adding PK Constraint
+ALTER TABLE SaleOrderDetails
+ADD CONSTRAINT PK_SaleOrderDetails PRIMARY KEY(IDS)
+
+--Add Index back to table

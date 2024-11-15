@@ -1,0 +1,31 @@
+-- PARSENAME splits comma-separated values into separate columns
+DECLARE @str1 nvarchar(50)='20,10,30'
+SELECT PARSENAME(REPLACE(@str1, ',', '.'), 3) AS Col1,
+	PARSENAME(REPLACE(@str1, ',', '.'), 2) AS Col2,
+	PARSENAME(REPLACE(@str1, ',', '.'), 1) AS Col3
+
+/*
+Output:
+Col1	Col2	Col3
+20		10		30
+*/
+
+
+declare @Str nvarchar(100)='20,10,30/5,1,3/50,20,60'
+
+insert into CommaValues
+select item from SplitString(@Str,'/')
+
+SELECT 
+    PARSENAME(REPLACE(Input, ',', '.'), 3) AS Col1,
+    PARSENAME(REPLACE(Input, ',', '.'), 2) AS Col2,
+    PARSENAME(REPLACE(Input, ',', '.'), 1) AS Col3
+FROM CommaValues;
+
+
+
+
+
+
+
+

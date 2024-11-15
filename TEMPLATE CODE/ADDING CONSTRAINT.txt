@@ -1,0 +1,4 @@
+ALTER TABLE EmployeeMaster
+ADD IsActive BIT 
+
+ALTER TABLE EmployeeMaster ADD CONSTRAINT DF_EmployeeMaster_IsActive  DEFAULT (0) FOR IsActive

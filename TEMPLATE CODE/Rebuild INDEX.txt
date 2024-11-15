@@ -1,0 +1,16 @@
+--To ReBuild Indexes of Particular table
+UPDATE STATISTICS SPC_Characteristic
+
+--To ReBuild Indexes of Entire Database
+EXEC sp_updatestats
+
+--StackOverFlow
+ALTER INDEX ALL ON SPC_Characteristic REBUILD
+
+
+
+
+
+
+--Show Statistics of Index like Last Updated time
+DBCC SHOW_STATISTICS('TableName','IndexName');

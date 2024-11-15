@@ -1,0 +1,58 @@
+DECLARE @Date DATETIME='2024-01-01 14:30:25'
+
+
+-->>>>>>>>>>>>>>>>>>>> Using FORMAT <<<<<<<<<<<<<<<<<<<<--
+
+/* Only Date */
+SELECT FORMAT(@Date, 'dd-MM-yyyy')
+--01-01-2024
+
+
+/* 24 Hrs Format */	
+SELECT FORMAT(@Date, 'dd-MM-yyyy HH:mm:ss')	
+--01-01-2024 14:30:25	
+		
+
+/* 12 Hrs Format with AM/PM */
+SELECT FORMAT(@Date, 'dd-MM-yyyy hh:mm:ss tt')	
+--01-01-2024 02:30:25 PM
+
+
+/* Day Name in 3 letters */
+SELECT FORMAT(@Date, 'ddd')	
+--Mon
+
+
+/* Day Name in full */
+SELECT FORMAT(@Date, 'dddd')	
+--Monday
+
+
+
+
+
+-->>>>>>>>>>>>>>>>>>>> Using CONVERT <<<<<<<<<<<<<<<<<<<<--
+
+/* Date & Time in yyyy-MM-dd hh:mm:ss */
+SELECT CONVERT(NVARCHAR(20),@Date,120)
+--2024-01-01 14:30:25
+
+
+/* Only Date in yyyy-MM-dd */
+SELECT CONVERT(NVARCHAR(10),@Date,23)	
+--2024-01-01
+
+
+/* Only Time in hh:mm:ss */
+SELECT CONVERT(NVARCHAR(8), @Date, 108)
+--14:30:25
+
+
+/* Only Time in hh:mm */
+SELECT CONVERT(nvarchar(5),@Date,108)
+--14:30
+
+
+/* Only Time in hh */
+SELECT CONVERT(nvarchar(2),@Date,108)
+--14

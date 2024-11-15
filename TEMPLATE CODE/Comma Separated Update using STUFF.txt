@@ -1,0 +1,9 @@
+UPDATE #Temp SET OperatorId=(
+		SELECT STUFF((
+			SELECT ', ' + OperatorId
+			FROM #ShiftProductionDetails A1
+			WHERE T2.[Date]=A1.pDate AND T2.MachineId=A1.MachineID AND T2.ComponentId=A1.ComponentID AND T2.OpnNo=A1.OperationNo AND T2.WorkOrderNo=A1.WorkOrderNumber AND T2.[Shift]=A1.[Shift]
+			FOR XML PATH('')
+		), 1, 2, '')
+	)
+	FROM #Temp T2

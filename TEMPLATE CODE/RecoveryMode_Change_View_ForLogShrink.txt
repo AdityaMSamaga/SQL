@@ -1,0 +1,5 @@
+alter database ACE_OrderDeliveryManagement
+set recovery simple
+
+SELECT name, recovery_model_desc
+FROM sys.databases where name='ACE_OrderDeliveryManagement';

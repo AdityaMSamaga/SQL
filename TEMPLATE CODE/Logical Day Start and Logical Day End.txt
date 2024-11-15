@@ -1,0 +1,2 @@
+dbo.f_GetLogicalDay(@FromDate,'start')
+dbo.f_GetLogicalDay(@ToDate,'end')

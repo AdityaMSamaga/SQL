@@ -1,0 +1,32 @@
+CREATE TABLE #ShiftDetails   
+(  
+	PDate DATETIME,  
+	ShiftName NVARCHAR(50),  
+	ShiftStart DATETIME,  
+	ShiftEnd DATETIME,
+	ShiftId INT
+);
+
+DECLARE @Var_StartDate DATE;
+DECLARE @Var_EndDate DATE;
+
+SELECT @Var_StartDate = @FromDate  
+SELECT @Var_EndDate = @ToDate  
+  
+WHILE @Var_StartDate <= @Var_EndDate  
+BEGIN  
+	INSERT #ShiftDetails(Pdate, ShiftName, ShiftStart, ShiftEnd)  
+	EXEC s_GetShiftTime @Var_StartDate, ''  
+
+	SELECT @Var_StartDate = DATEADD(DAY, 1, @Var_StartDate)  
+END
+
+UPDATE #ShiftDetails SET ShiftId=T1.shiftid
+FROM
+(
+	SELECT DISTINCT A1.ShiftName, A1.shiftid
+	FROM shiftdetails A1
+	INNER JOIN (SELECT DISTINCT ShiftName FROM #ShiftDetails) A2 ON A1.ShiftName=A2.ShiftName
+	WHERE Running=1
+)T1
+INNER JOIN #ShiftDetails T2 ON T1.ShiftName=T2.ShiftName
